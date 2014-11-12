@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidAnimation</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_property_animations">PropertyAnimations</string>
+    <string name="use_animation_resources">Use Animation Resources</string>
+    <string name="alpha">Alpha</string>
+    <string name="translate">Translate</string>
+    <string name="rotate">Rotate</string>
+    <string name="scale">Scale</string>
+    <string name="set">Set</string>
+    <string name="title_activity_drawable_animation">DrawableAnimation</string>
+    <string name="title_activity_bounce">Bounce</string>
+    <string name="title_activity_keyframe_animation">KeyframeAnimation</string>
+    <string name="title_activity_cross_fading_drawables">CrossFadingDrawables</string>
+    <string name="title_activity_window_animations">WindowAnimations</string>
+    <string name="title_activity_sub">SubActivity</string>
+    <string name="title_activity_animated_sub">AnimatedSubActivity</string>
+    <string name="title_activity_activity_animations">ActivityAnimations</string>
+    <string name="title_activity_picture_details">PictureDetailsActivity</string>
+    <string name="title_activity_multi_property_animations">MultiPropertyAnimations</string>
+
+</resources>

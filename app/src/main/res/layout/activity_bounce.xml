@@ -1,0 +1,17 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#007F00"
+    tools:context="com.desmond.androidanimation.PropertyAnimation.Bounce">
+
+    <view
+        class="com.desmond.androidanimation.PropertyAnimation.Bounce$MyView"
+        android:id="@+id/myView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Bouncer"/>
+
+</LinearLayout>

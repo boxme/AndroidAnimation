@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.desmond.androidanimation.ActivityAnimation.ActivityAnimations">
+
+    <item
+        android:id="@+id/menu_slow"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Slow"
+        android:checkable="true"/>
+
+</menu>
