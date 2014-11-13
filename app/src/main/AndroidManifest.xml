@@ -55,6 +55,10 @@
         <activity
             android:name="com.desmond.androidanimation.MultiPropertyAnimations.MultiPropertyAnimations"
             android:label="@string/title_activity_multi_property_animations" >
+        </activity>
+        <activity
+            android:name="com.desmond.androidanimation.AndroidCurvedAnimation.CurvedMotionActivity"
+            android:label="@string/title_activity_curved_motion" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

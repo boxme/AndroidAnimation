@@ -21,5 +21,6 @@
     <string name="title_activity_activity_animations">ActivityAnimations</string>
     <string name="title_activity_picture_details">PictureDetailsActivity</string>
     <string name="title_activity_multi_property_animations">MultiPropertyAnimations</string>
+    <string name="title_activity_curved_motion">CurvedMotionActivity</string>
 
 </resources>
