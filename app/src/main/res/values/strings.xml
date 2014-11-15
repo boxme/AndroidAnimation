@@ -23,5 +23,6 @@
     <string name="title_activity_multi_property_animations">MultiPropertyAnimations</string>
     <string name="title_activity_curved_motion">CurvedMotionActivity</string>
     <string name="title_activity_live_button">LiveButton</string>
+    <string name="title_activity_anticipate">Anticipate</string>
 
 </resources>

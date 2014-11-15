@@ -63,6 +63,10 @@
         <activity
             android:name="com.desmond.androidanimation.AndroidOvershootAnimation.LiveButton"
             android:label="@string/title_activity_live_button" >
+        </activity>
+        <activity
+            android:name="com.desmond.androidanimation.AndroidOvershootAnimation.Anticipate"
+            android:label="@string/title_activity_anticipate" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
