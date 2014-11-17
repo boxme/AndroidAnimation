@@ -67,6 +67,10 @@
         <activity
             android:name="com.desmond.androidanimation.AndroidOvershootAnimation.Anticipate"
             android:label="@string/title_activity_anticipate" >
+        </activity>
+        <activity
+            android:name=".AndroidSquashAndStretchAnimation.SquashAndStretch"
+            android:label="@string/title_activity_squashand_stretch" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
