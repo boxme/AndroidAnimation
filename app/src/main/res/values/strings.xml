@@ -25,5 +25,7 @@
     <string name="title_activity_live_button">LiveButton</string>
     <string name="title_activity_anticipate">Anticipate</string>
     <string name="title_activity_squashand_stretch">SquashandStretch</string>
+    <string name="title_activity_player_setup">PlayerSetupActivity</string>
+    <string name="title_activity_toon_game">ToonGameActivity</string>
 
 </resources>

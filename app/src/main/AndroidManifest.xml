@@ -69,8 +69,16 @@
             android:label="@string/title_activity_anticipate" >
         </activity>
         <activity
-            android:name=".AndroidSquashAndStretchAnimation.SquashAndStretch"
+            android:name="com.desmond.androidanimation.AndroidSquashAndStretchAnimation.SquashAndStretch"
             android:label="@string/title_activity_squashand_stretch" >
+        </activity>
+        <activity
+            android:name="com.desmond.androidanimation.CartoonAnimation.PlayerSetupActivity"
+            android:label="@string/title_activity_player_setup" >
+        </activity>
+        <activity
+            android:name="com.desmond.androidanimation.CartoonAnimation.ToonGameActivity"
+            android:label="@string/title_activity_toon_game" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

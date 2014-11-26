@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container"
+    tools:context="com.desmond.androidanimation.CartoonAnimation.ToonGameActivity">
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="64sp"
+        android:layout_centerInParent="true"
+        android:textColor="#00c"
+        android:text="Play!"
+        android:background="@drawable/green_button"
+        android:visibility="invisible"
+        android:onClick="play"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/startBtn"
+        android:layout_marginBottom="39dp"
+        android:text="Welcome"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:textSize="64sp"
+        android:textStyle="bold"/>
+</RelativeLayout>
