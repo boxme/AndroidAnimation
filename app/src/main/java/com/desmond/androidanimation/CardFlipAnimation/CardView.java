@@ -4,7 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -43,21 +45,24 @@ public class CardView extends ImageView {
 
     public CardView(Context context) {
         super(context);
+        init();
     }
 
     public CardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     /**
      * Loads the bitmap drawables used for the front and back for this card
      */
     @TargetApi(12)
-    public void init(Context context) {
+    public void init() {
         mHorizontalFlipMatrix = new Matrix();
 
         // Set the Z-axis
@@ -84,6 +89,77 @@ public class CardView extends ImageView {
         canvas.drawBitmap(bitmapDrawable.getBitmap(), ANTIALIAS_BORDER, ANTIALIAS_BORDER, null);
         return new BitmapDrawable(getResources(), bitmapWithBorder);
     }
+
+    /**
+     * Initiates a horizontal flip from right to left
+     */
+    public void flipRightToLeft(int numberInPile, int velocity) {
+        setPivotX(0);
+        flipHorizontally(numberInPile, false, velocity);
+    }
+
+    /**
+     * Initiates a horizontal flip from left to right
+     */
+    public void flipLeftToRight(int numerInPile, int velocity) {
+        setPivotX(getWidth());
+        flipHorizontally(numerInPile, true, velocity);
+    }
+
+    /**
+     * Animates a horizontal (about the y-axis) flip of this card.
+     * @param numberInPile Specifies how many cards are underneath this card in the new
+     *                     pile so as to properly adjust its position offset in the stack.
+     *
+     * @param clockwise Specifies whether the horizontal animation is 180 degrees
+     */
+    public void flipHorizontally(int numberInPile, boolean clockwise, int velocity) {
+        toggleFrontShowing();
+
+
+    }
+
+    /**
+     * Darkens this ImageView's image by applying a shadow color filter over it
+     */
+    public void setShadow(float value) {
+        int colorValue = (int) (255 - 200 * value);
+        setColorFilter(Color.rgb(colorValue, colorValue, colorValue), PorterDuff.Mode.MULTIPLY);
+    }
+
+    public void toggleFrontShowing() {
+        mIsFrontShowing = !mIsFrontShowing;
+    }
+
+    public void toggleIsHorizontallyFlipped() {
+        mIsHorizontallyFlipped = !mIsHorizontallyFlipped;
+        invalidate();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mHorizontalFlipMatrix.setScale(-1, 1, w/2, h/2);
+    }
+
+    /**
+     * Scale the canvas horizontally about its midpoint in the case that the card
+     * is in a horizontally flipped state
+     * @param canvas
+     */
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (mIsHorizontallyFlipped) {
+            canvas.concat(mHorizontalFlipMatrix);
+        }
+        super.onDraw(canvas);
+    }
+
+    /**
+     * Updates the layout parameters of this view so as to reset the rotationX &
+     * rotationY parameters, and remain independent of its previous position, while
+     * also maintaining its current position in the layout
+     */
 
     /**
      * Toggles the visible bitmap of this view between its front and back drawables respectively
