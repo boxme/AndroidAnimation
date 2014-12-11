@@ -16,7 +16,6 @@ import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -127,9 +126,11 @@ public class CardView extends ImageView {
     public void flipHorizontally(int numberInPile, boolean clockwise, int velocity) {
         toggleFrontShowing();
 
+        // Rotation about y-axis
         PropertyValuesHolder rotation =
                 PropertyValuesHolder.ofFloat("rotationY", clockwise ? 180 : -180);
 
+        // Offset the position to show some glimpses of the cards underneath
         PropertyValuesHolder xOffset = PropertyValuesHolder.ofFloat("translationX",
                 numberInPile * CardFlipActivity.CARD_PILE_OFFSET);
         PropertyValuesHolder yOffset = PropertyValuesHolder.ofFloat("translationY",
@@ -146,6 +147,7 @@ public class CardView extends ImageView {
             }
         });
 
+        // Create a shadow during the flip
         Keyframe shadowKeyFrameStart = Keyframe.ofFloat(0, 0);
         Keyframe shadowKeyFrameMid = Keyframe.ofFloat(0.5f, 1);
         Keyframe shadowKeyFrameEnd = Keyframe.ofFloat(1, 0);
@@ -187,12 +189,22 @@ public class CardView extends ImageView {
 
     public void toggleIsHorizontallyFlipped() {
         mIsHorizontallyFlipped = !mIsHorizontallyFlipped;
+
+        // Redraw
         invalidate();
     }
 
+    /**
+     *  The main call to onSizeChanged() is done after the construction of your view
+     *  but before the drawing. At this time the system will calculate the size
+     *  of your view and notify you by calling onSizeChanged()
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+
+        // Responsible for the drawable that is shown during the flipping animation
+        // scale x by -1 will create a vertical flip
         mHorizontalFlipMatrix.setScale(-1, 1, w/2, h/2);
     }
 
@@ -204,6 +216,7 @@ public class CardView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         if (mIsHorizontallyFlipped) {
+            // Set the matrix
             canvas.concat(mHorizontalFlipMatrix);
         }
         super.onDraw(canvas);
@@ -237,7 +250,7 @@ public class CardView extends ImageView {
 
     /**
      * Returns a rotation animation which rotates this card by some degree about
-     * one of its corners either in the clockwise or counter-clockewise direction.
+     * one of its corners either in the clockwise or counter-clockwise direction.
      * Depending on how many cards lie below this one in the stack, this card will be rotated
      * by a different amount so all the cards are visible when rotated out
      */
@@ -250,6 +263,7 @@ public class CardView extends ImageView {
 
         rotation = isRotatingOut ? rotation : 0;
 
+        // rotation is about the z-axis. rotationX & rotationY are about the X & Y axis respectively
         return ObjectAnimator.ofFloat(this, "rotation", rotation);
     }
 
@@ -265,6 +279,8 @@ public class CardView extends ImageView {
         final int currentRotation = (int) getRotation();
 
         rotateCardAroundCorner(corner);
+
+        // Rotate 360
         int rotation = 360 - currentRotation;
         rotation = isClockwise ? rotation : -rotation;
 
@@ -276,6 +292,7 @@ public class CardView extends ImageView {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                // Ensure that the card is back at its original rotation
                 setRotation(currentRotation);
             }
         });

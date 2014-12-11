@@ -4,11 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
@@ -46,6 +44,8 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
         setContentView(R.layout.activity_card_flip);
 
         mStackCards = new ArrayList<ArrayList<CardView>>();
+
+        // Left & Right stacks
         mStackCards.add(new ArrayList<CardView>());
         mStackCards.add(new ArrayList<CardView>());
 
@@ -69,6 +69,7 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
                     mLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
 
+                // Get the measured card width and height before onDraw()
                 mCardHeight = mLayout.getHeight();
                 mCardWidth = mLayout.getWidth() / 2;
 
@@ -98,7 +99,9 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
         mLayout.addView(view, params);
     }
 
-    /** Returns the appropriate stack corresponding to the MotionEvent. */
+    /**
+     * Returns the appropriate stack corresponding to the MotionEvent.
+     */
     public int getStack(MotionEvent ev) {
         boolean isLeft = ev.getX() <= mCardWidth;
         return isLeft ? LEFT_STACK : RIGHT_STACK;
@@ -113,6 +116,7 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
     public void rotateCardView(final CardView cardView, int stack, float velocityX,
                                float velocityY) {
 
+        // xGreaterThanY is true if it's a horizontal swipe
         boolean xGreaterThanY = Math.abs(velocityX) > Math.abs(velocityY);
 
         boolean bothStacksEnabled = mIsStackEnabled[RIGHT_STACK] && mIsStackEnabled[LEFT_STACK];
@@ -122,33 +126,48 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
 
         switch (stack) {
             case RIGHT_STACK:
+                // Flip from right to left
                 if (velocityX < 0 &&  xGreaterThanY) {
                     if (!bothStacksEnabled) {
                         break;
                     }
+
                     mLayout.bringChildToFront(cardView);
                     mLayout.requestLayout();
+
                     rightStack.remove(rightStack.size() - 1);
                     leftStack.add(cardView);
+
+                    // Give the original stack size, hence minus by 1
                     cardView.flipRightToLeft(leftStack.size() - 1, (int)velocityX);
                     break;
-                } else if (!xGreaterThanY) {
+                }
+                else if (!xGreaterThanY) {
+                    // Rotate the cards out
                     boolean rotateCardsOut = velocityY > 0;
                     rotateCards(RIGHT_STACK, CardView.Corner.BOTTOM_LEFT, rotateCardsOut);
                 }
                 break;
+
             case LEFT_STACK:
+                // Flip from left to right
                 if (velocityX > 0 && xGreaterThanY) {
                     if (!bothStacksEnabled) {
                         break;
                     }
+
                     mLayout.bringChildToFront(cardView);
                     mLayout.requestLayout();
+
                     leftStack.remove(leftStack.size() - 1);
                     rightStack.add(cardView);
+
+                    // Give the original stack size, hence minus by 1
                     cardView.flipLeftToRight(rightStack.size() - 1, (int)velocityX);
                     break;
-                } else if (!xGreaterThanY) {
+                }
+                else if (!xGreaterThanY) {
+                    // Rotate the cards out
                     boolean rotateCardsOut = velocityY > 0;
                     rotateCards(LEFT_STACK, CardView.Corner.BOTTOM_LEFT, rotateCardsOut);
                 }
@@ -170,9 +189,12 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
 
     @Override
     public boolean onTouchEvent(MotionEvent me) {
+
+        // If the custom touch event is locked, pass it on to the super class
         if (mTouchEventsEnabled) {
             return gDetector.onTouchEvent(me);
-        } else {
+        }
+        else {
             return super.onTouchEvent(me);
         }
     }
@@ -186,7 +208,7 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
                              final boolean isRotatingOut) {
         List<Animator> animations = new ArrayList<Animator>();
 
-        ArrayList <CardView> cards = mStackCards.get(stack);
+        ArrayList<CardView> cards = mStackCards.get(stack);
 
         for (int i = 0; i < cards.size(); i++) {
             CardView cardView = cards.get(i);
@@ -204,6 +226,8 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                // If the stack of cards has been rotated out, then it should not be
+                // allowed for the flipping animation
                 mIsStackEnabled[stack] = !isRotatingOut;
             }
         });
@@ -221,6 +245,8 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
         for (int i = 0; i < cards.size(); i++) {
             CardView cardView = cards.get(i);
             animations.add(cardView.getFullRotationAnimator(i, corner, false));
+
+            // Change the Z-order of the child so it's on top of all other children
             mLayout.bringChildToFront(cardView);
         }
         /** Same reasoning for bringing cards to front as in rotateCards().*/
@@ -244,8 +270,9 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
      * a card flip event when a fling event occurs. Also listens for tap events in
      * order to potentially initiate a full rotation animation.
      */
-    private GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector
-            .SimpleOnGestureListener() {
+    private GestureDetector.SimpleOnGestureListener mGestureListener =
+            new GestureDetector.SimpleOnGestureListener() {
+
         @Override
         public boolean onSingleTapUp(MotionEvent motionEvent) {
             int stack = getStack(motionEvent);
@@ -254,13 +281,15 @@ public class CardFlipActivity extends ActionBarActivity implements CardFlipListe
         }
 
         @Override
-        public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v,
-                               float v2) {
+        public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float velocityX,
+                               float velocityY) {
+
+            // Get Left or Right stack
             int stack = getStack(motionEvent);
             ArrayList<CardView> cardStack = mStackCards.get(stack);
             int size = cardStack.size();
             if (size > 0) {
-                rotateCardView(cardStack.get(size - 1), stack, v, v2);
+                rotateCardView(cardStack.get(size - 1), stack, velocityX, velocityY);
             }
             return true;
         }
