@@ -4,8 +4,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,17 +15,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.desmond.androidanimation.R;
 
-/**
- * This example shows how to add some life to a view during animation by deforming the shape.
- * As the button "falls", it stretches along the line of travel. When it hits the bottom, it
- * squashes, like a real object when hitting a surface. Then the button reverses these actions
- * to bounce back up to the start.
- *
- * Watch the associated video for this demo on the DevBytes channel of developer.android.com
- * or on the DevBytes playlist in the androiddevelopers channel on YouTube at
- * https://www.youtube.com/playlist?list=PLWz5rJ2EKKc_XOgcRukSoKKjewFJZrKV0.
- */
-public class SquashAndStretch extends ActionBarActivity {
+public class SquashandStretchActivity extends ActionBarActivity {
 
     private static final AccelerateInterpolator sAccelerator = new AccelerateInterpolator();
     private static final DecelerateInterpolator sDecelerator = new DecelerateInterpolator();

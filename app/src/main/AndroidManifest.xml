@@ -4,87 +4,90 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true">
-
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.desmond.androidanimation.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.PropertyAnimation.PropertyAnimations"
+            android:name=".PropertyAnimation.PropertyAnimations"
             android:label="@string/title_activity_property_animations" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.DrawableAnimation.DrawableAnimation"
+            android:name=".DrawableAnimation.DrawableAnimation"
             android:label="@string/title_activity_drawable_animation" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.PropertyAnimation.Bounce"
+            android:name=".PropertyAnimation.Bounce"
             android:label="@string/title_activity_bounce" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.DrawableAnimation.KeyframeAnimation"
+            android:name=".DrawableAnimation.KeyframeAnimation"
             android:label="@string/title_activity_keyframe_animation" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.DrawableAnimation.CrossFadingDrawables"
+            android:name=".DrawableAnimation.CrossFadingDrawables"
             android:label="@string/title_activity_cross_fading_drawables" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.WindowAnimation.WindowAnimations"
+            android:name=".WindowAnimation.WindowAnimations"
             android:label="@string/title_activity_window_animations" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.WindowAnimation.SubActivity"
+            android:name=".WindowAnimation.SubActivity"
             android:label="@string/title_activity_sub" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.WindowAnimation.AnimatedSubActivity"
+            android:name=".WindowAnimation.AnimatedSubActivity"
             android:label="@string/title_activity_animated_sub" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.ActivityAnimation.ActivityAnimations"
+            android:name=".ActivityAnimation.ActivityAnimations"
             android:label="@string/title_activity_activity_animations" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.ActivityAnimation.PictureDetailsActivity"
+            android:name=".ActivityAnimation.PictureDetailsActivity"
             android:label="@string/title_activity_picture_details"
             android:theme="@style/Transparent" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.MultiPropertyAnimations.MultiPropertyAnimations"
+            android:name=".MultiPropertyAnimations.MultiPropertyAnimations"
             android:label="@string/title_activity_multi_property_animations" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.AndroidCurvedAnimation.CurvedMotionActivity"
+            android:name=".AndroidCurvedAnimation.CurvedMotionActivity"
             android:label="@string/title_activity_curved_motion" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.AndroidOvershootAnimation.LiveButton"
+            android:name=".AndroidOvershootAnimation.LiveButton"
             android:label="@string/title_activity_live_button" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.AndroidOvershootAnimation.Anticipate"
+            android:name=".AndroidOvershootAnimation.Anticipate"
             android:label="@string/title_activity_anticipate" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.AndroidSquashAndStretchAnimation.SquashAndStretch"
+            android:name=".AndroidSquashAndStretchAnimation.SquashandStretchActivity"
             android:label="@string/title_activity_squashand_stretch" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.CartoonAnimation.PlayerSetupActivity"
+            android:name=".CartoonAnimation.PlayerSetupActivity"
             android:label="@string/title_activity_player_setup" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.CartoonAnimation.ToonGameActivity"
+            android:name=".CartoonAnimation.ToonGameActivity"
             android:label="@string/title_activity_toon_game" >
         </activity>
         <activity
-            android:name="com.desmond.androidanimation.FragmentAnimation.SlidingFragmentActivity"
+            android:name=".FragmentAnimation.SlidingFragmentActivity"
             android:label="@string/title_activity_sliding_fragment" >
+        </activity>
+        <activity
+            android:name=".CardFlipAnimation.CardFlipActivity"
+            android:label="@string/title_activity_card_flip" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

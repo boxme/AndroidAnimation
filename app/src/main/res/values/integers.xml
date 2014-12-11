@@ -3,4 +3,7 @@
     <integer name="slide_up_down_duration">200</integer>
     <integer name="half_slide_up_down_duration">150</integer>
     <integer name="slide_up_down_final_value">150</integer>
+
+    <integer name="vertical_card_magin">30</integer>
+    <integer name="horizontal_card_magin">30</integer>
 </resources>

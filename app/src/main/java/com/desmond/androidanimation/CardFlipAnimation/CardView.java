@@ -1,5 +1,12 @@
 package com.desmond.androidanimation.CardFlipAnimation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.Keyframe;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,7 +16,10 @@ import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.desmond.androidanimation.R;
 
@@ -101,9 +111,9 @@ public class CardView extends ImageView {
     /**
      * Initiates a horizontal flip from left to right
      */
-    public void flipLeftToRight(int numerInPile, int velocity) {
+    public void flipLeftToRight(int numberInPile, int velocity) {
         setPivotX(getWidth());
-        flipHorizontally(numerInPile, true, velocity);
+        flipHorizontally(numberInPile, true, velocity);
     }
 
     /**
@@ -113,10 +123,54 @@ public class CardView extends ImageView {
      *
      * @param clockwise Specifies whether the horizontal animation is 180 degrees
      */
+    @TargetApi(12)
     public void flipHorizontally(int numberInPile, boolean clockwise, int velocity) {
         toggleFrontShowing();
 
+        PropertyValuesHolder rotation =
+                PropertyValuesHolder.ofFloat("rotationY", clockwise ? 180 : -180);
 
+        PropertyValuesHolder xOffset = PropertyValuesHolder.ofFloat("translationX",
+                numberInPile * CardFlipActivity.CARD_PILE_OFFSET);
+        PropertyValuesHolder yOffset = PropertyValuesHolder.ofFloat("translationY",
+                numberInPile * CardFlipActivity.CARD_PILE_OFFSET);
+
+        ObjectAnimator cardAnimator =
+                ObjectAnimator.ofPropertyValuesHolder(this, rotation, xOffset, yOffset);
+        cardAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                if (animation.getAnimatedFraction() >= 0.5) {
+                    updateDrawableBitmap();
+                }
+            }
+        });
+
+        Keyframe shadowKeyFrameStart = Keyframe.ofFloat(0, 0);
+        Keyframe shadowKeyFrameMid = Keyframe.ofFloat(0.5f, 1);
+        Keyframe shadowKeyFrameEnd = Keyframe.ofFloat(1, 0);
+        PropertyValuesHolder shadowPropertyValuesHolder = PropertyValuesHolder.ofKeyframe
+                ("shadow", shadowKeyFrameStart, shadowKeyFrameMid, shadowKeyFrameEnd);
+        ObjectAnimator colorizer = ObjectAnimator.ofPropertyValuesHolder(this,
+                shadowPropertyValuesHolder);
+
+        mCardFlipListener.onCardFlipStart();
+        AnimatorSet set = new AnimatorSet();
+        int duration = MAX_FLIP_DURATION - Math.abs(velocity) / VELOCITY_TO_DURATION_CONSTANT;
+        duration = duration < MIN_FLIP_DURATION ? MIN_FLIP_DURATION : duration;
+        set.setDuration(duration);
+        set.playTogether(cardAnimator, colorizer);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                toggleIsHorizontallyFlipped();
+                updateDrawableBitmap();
+                updateLayoutParams();
+                mCardFlipListener.onCardFlipEnd();
+            }
+        });
+        set.start();
     }
 
     /**
@@ -160,6 +214,75 @@ public class CardView extends ImageView {
      * rotationY parameters, and remain independent of its previous position, while
      * also maintaining its current position in the layout
      */
+    public void updateLayoutParams() {
+        RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) getLayoutParams());
+
+        params.leftMargin = (int) (params.leftMargin + ((Math.abs(getRotationY()) % 360) / 180) *
+                (2 * getPivotX() - getWidth()));
+
+        setRotationX(0);
+        setRotationY(0);
+
+        setLayoutParams(params);
+    }
+
+    /**
+     * Sets the appropriate translation of this card depending on how many cards
+     * are in the pile underneath it
+     */
+    public void updateTranslation(int numInPile) {
+        setTranslationX(CardFlipActivity.CARD_PILE_OFFSET * numInPile);
+        setTranslationY(CardFlipActivity.CARD_PILE_OFFSET * numInPile);
+    }
+
+    /**
+     * Returns a rotation animation which rotates this card by some degree about
+     * one of its corners either in the clockwise or counter-clockewise direction.
+     * Depending on how many cards lie below this one in the stack, this card will be rotated
+     * by a different amount so all the cards are visible when rotated out
+     */
+    public ObjectAnimator getRotationAnimator(int cardFromTop, Corner corner,
+                                              boolean isRotatingOut, boolean isClockwise) {
+        rotateCardAroundCorner(corner);
+        int rotation = cardFromTop * ROTATION_PER_CARD;
+
+        rotation = isClockwise ? rotation : -rotation;
+
+        rotation = isRotatingOut ? rotation : 0;
+
+        return ObjectAnimator.ofFloat(this, "rotation", rotation);
+    }
+
+    /**
+     * Returns a full rotation animator which rotates this card by 360 degrees
+     * about one of its corners either in the clockwise or counter-clockwise direction.
+     * Depending on how many cards lie below this one in the stack, a different start
+     * delay is applied to the animation so the cards don't all animate at once
+     */
+    public ObjectAnimator getFullRotationAnimator(int cardFromTop, Corner corner,
+                                                  boolean isClockwise) {
+
+        final int currentRotation = (int) getRotation();
+
+        rotateCardAroundCorner(corner);
+        int rotation = 360 - currentRotation;
+        rotation = isClockwise ? rotation : -rotation;
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "rotation", rotation);;
+
+        animator.setStartDelay(ROTATION_DELAY_PER_CARD * cardFromTop);
+        animator.setDuration(ROTATION_DURATION);
+
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                setRotation(currentRotation);
+            }
+        });
+
+        return animator;
+    }
+
 
     /**
      * Toggles the visible bitmap of this view between its front and back drawables respectively
@@ -167,5 +290,37 @@ public class CardView extends ImageView {
     public void updateDrawableBitmap() {
         mCurrentBitmapDrawable = mIsFrontShowing ? mFrontBitmapDrawable : mBackBitmapDrawable;
         setImageDrawable(mCurrentBitmapDrawable);
+    }
+
+    /**
+     * Sets the appropriate pivot of this card so that it can be rotated about
+     * any one of its four corners
+     */
+    public void rotateCardAroundCorner(Corner corner) {
+        switch (corner) {
+            case TOP_LEFT:
+                setPivotX(0);
+                setPivotY(0);
+                break;
+
+            case TOP_RIGHT:
+                setPivotX(getWidth());
+                setPivotY(0);
+                break;
+
+            case BOTTOM_LEFT:
+                setPivotX(0);
+                setPivotY(getHeight());
+                break;
+
+            case BOTTOM_RIGHT:
+                setPivotX(getWidth());
+                setPivotY(getHeight());
+                break;
+        }
+    }
+
+    public void setCardFlipListener(CardFlipListener listener) {
+        mCardFlipListener = listener;
     }
 }

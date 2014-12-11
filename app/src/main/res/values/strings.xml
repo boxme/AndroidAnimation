@@ -29,7 +29,6 @@
     <string name="title_activity_toon_game">ToonGameActivity</string>
     <string name="title_activity_sliding_fragment">SlidingFragmentActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="photo_credits"><b>Golden Gate Sunset</b> by <b>Romain Guy</b></string>
     <string name="address"><b>Address:</b> Golden Gate Bridge, San Francisco, CA 94129</string>
     <string name="elevation"><b>Elevation:</b>  220\' (67 m)</string>
@@ -39,5 +38,7 @@
     <string name="length"><b>Total length:</b>  8,980\' (2,737 m)</string>
     <string name="summary">"The Golden Gate Bridge is a suspension bridge spanning the Golden Gate, the opening of the San Francisco Bay into the Pacific Ocean."</string>
     <string name="bridge">Golden Gate Bridge</string>
+    <string name="title_activity_card_flip">CardFlipActivity</string>
+    <string name="title_activity_sqashand_stretch">SqashandStretchActivity</string>
 
 </resources>
