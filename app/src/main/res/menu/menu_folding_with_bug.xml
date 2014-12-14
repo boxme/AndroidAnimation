@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.desmond.androidanimation.FoldingLayoutAnimation.FoldingLayoutActivity">
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/toggle_orientation"
+        app:showAsAction="never"
+        android:title="@string/vertical"/>
+
+    <item
+        android:title="num of folds"
+        android:id="@+id/num_of_folds"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/spinner"/>
+
+    <item
+        android:id="@+id/animate_fold"
+        app:showAsAction="never"
+        android:title="@string/animate"/>
+</menu>

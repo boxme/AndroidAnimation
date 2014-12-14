@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.desmond.androidanimation.FoldingLayoutAnimation.FoldingLayoutActivity">
+
+    <item
+        android:id="@+id/toggle_orientation"
+        app:showAsAction="never"
+        android:title="@string/vertical"/>
+
+    <item
+        android:title="num of folds"
+        android:id="@+id/num_of_folds"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/spinner"/>
+
+    <item
+        android:title="@string/sepia_effect_off"
+        android:id="@+id/sepia"
+        android:checkable="true"/>
+
+    <item
+        android:title="@string/camera_feed"
+        android:id="@+id/camera_feed"/>
+
+    <item
+        android:id="@+id/animate_fold"
+        app:showAsAction="never"
+        android:title="@string/animate"/>
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+</menu>

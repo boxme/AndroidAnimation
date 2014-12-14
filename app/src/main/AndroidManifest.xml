@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.desmond.androidanimation" >
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -88,6 +91,10 @@
         <activity
             android:name=".CardFlipAnimation.CardFlipActivity"
             android:label="@string/title_activity_card_flip" >
+        </activity>
+        <activity
+            android:name=".FoldingLayoutAnimation.FoldingLayoutActivity"
+            android:label="@string/title_activity_folding_layout" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
